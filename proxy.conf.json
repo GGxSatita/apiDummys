@@ -1,0 +1,7 @@
+{
+  "/authapi/*": {
+    "target": "https://freefakeapi.io",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
