@@ -18,7 +18,7 @@ export class HomePage {
     public prueba: AuthApiService,
     public fb : FormBuilder
   ) {}
-  public probarLogin(){
+  public ingresar(){
     this.prueba.authenticate({
       username: this.name,
       password:  this.password
@@ -26,7 +26,7 @@ export class HomePage {
   }
 
   public validarToken(){
-
+    return
   }
 
 }

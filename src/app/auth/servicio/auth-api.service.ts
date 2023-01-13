@@ -6,13 +6,18 @@ import { catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthApiService {
   private URL_AUTH: string = 'https://dummyjson.com/auth/login';
+
   private datosUsuario: AuthResponse | null | Observable<null> = null;
   private cargando: boolean = false;
+
+  public token : string = '';
 
 
   constructor(
@@ -21,7 +26,7 @@ export class AuthApiService {
     private router : Router
   ) { }
 
-  public authenticate({ username, password }: Auth){
+  public authenticate({ username, password}: Auth){
     this.cargando = true;
     this.client.post<AuthResponse>(this.URL_AUTH,{
       username,
@@ -29,13 +34,15 @@ export class AuthApiService {
     }, {
       headers: {
         'Content-Type':'application/json',
+        'Authorization': 'Bearer /* YOUR_TOKEN_HERE */', //esto va en el servicio de productos, y se utiliza metodo get
+
       }
     })
     .pipe(
       catchError(async (error: HttpErrorResponse)=>{
         if(error.status === 400){
           const alerta = await this.alert.create({
-            header: 'Usuario y contraseña incorectos',
+            header: 'Usuario o contraseña incorectos',
             buttons: [
               {
                 text: 'ok!',
@@ -77,4 +84,11 @@ export class AuthApiService {
   public obtenerCargando(){
     return this.cargando;
   }
+
+  public obtenerToken(){
+    return (this.datosUsuario as AuthResponse).token
+  }
+
+
+
 }
