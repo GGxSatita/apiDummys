@@ -4,6 +4,7 @@ import { Auth, AuthResponse }  from './../../model/auth';
 import { AlertController } from '@ionic/angular';
 import { catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,11 @@ export class AuthApiService {
   private datosUsuario: AuthResponse | null | Observable<null> = null;
   private cargando: boolean = false;
 
+
   constructor(
     private client: HttpClient,
-    private alert: AlertController
+    private alert: AlertController,
+    private router : Router
   ) { }
 
   public authenticate({ username, password }: Auth){
@@ -51,12 +54,19 @@ export class AuthApiService {
       this.cargando = false;
       if(datos){
         this.datosUsuario = datos;
-        const alerta = await this.alert.create({
-          header: 'Correcto'
-        });
-        await alerta.present();
+        if(datos){
+          this.router.navigate([
+            'info-usuario',
+            this.datosUsuario?.image,
+            this.datosUsuario.firstName,
+            this.datosUsuario.lastName,
+            this.datosUsuario.email,
+            this.datosUsuario.gender
+          ])
+        }
       }
       // La redirección
+
     })
   }
 

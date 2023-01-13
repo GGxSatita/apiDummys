@@ -11,14 +11,17 @@ import {FormBuilder, FormGroup, Validator} from '@angular/forms'
 })
 export class HomePage {
 
+  public name : string = '';
+  public password : string = '';
+
   constructor(
     public prueba: AuthApiService,
     public fb : FormBuilder
   ) {}
   public probarLogin(){
     this.prueba.authenticate({
-      username: 'kminchelle',
-      password: '0lelplR'
+      username: this.name,
+      password:  this.password
     })
   }
 
